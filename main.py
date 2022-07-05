@@ -33,7 +33,7 @@ def get_dog():
     return img
 
 
-img = pyplot.imread("domestic_k9/Doggo.jpeg")
+original_dog = pyplot.imread("domestic_k9/Doggo.jpeg")
 
 
 def slice_vertically(img):
@@ -57,12 +57,50 @@ def slice_vertically(img):
     clean_dog_1, dirt = np.split(dog_1, 2, axis=1)
     clean_dog_2, dirt = np.split(dog_2, 2, axis=1)
 
-    pyplot.imsave("sliced_dogs/first_gen/dog_1.jpeg", clean_dog_1)
-    pyplot.imsave("sliced_dogs/first_gen/dog_2.jpeg", clean_dog_2)
+    pyplot.imsave("sliced_dogs/gen_1/dog_1.jpeg", clean_dog_1)
+    pyplot.imsave("sliced_dogs/gen_1/dog_2.jpeg", clean_dog_2)
 
 
-def slice_horizontally():
-    print("Ruy")
+def slice_horizontally(img):
+    slice_width = 4
+    index = 0
+    step_1 = 0
+    step_2 = slice_width
+    dog_1 = np.empty_like(img)
+    dog_2 = np.empty_like(img)
+
+    while step_1 < np.size(img, 0):
+        slice_of_dog_1 = img[step_1 : step_1 + slice_width, :]
+        # slice_of_dog_2 = img[step_2 : step_2 + slice_width, :]
+        dog_1[index : index + slice_width, :] = slice_of_dog_1
+        # dog_2[index : index + slice_width, :] = slice_of_dog_2
+
+        index += slice_width
+        step_1 += slice_width * 2
+        step_2 += slice_width * 2
+
+    clean_dog_1, dirt = np.split(dog_1, 2, axis=1)
+    # clean_dog_2, dirt = np.split(dog_2, 2, axis=1)
+
+    pyplot.imsave("sliced_dogs/gen_2/dog_1.jpeg", clean_dog_1)
+    # pyplot.imsave("sliced_dogs/gen_2/dog_2.jpeg", clean_dog_2)
 
 
-slice_vertically(img)
+slice_vertically(original_dog)
+
+first_gen_dog_1 = pyplot.imread("sliced_dogs/gen_1/dog_1.jpeg")
+first_gen_dog_2 = pyplot.imread("sliced_dogs/gen_1/dog_2.jpeg")
+
+print(first_gen_dog_1.shape)
+a = np.empty_like(first_gen_dog_1)
+
+a[0:50] = 
+
+print(np.empty_like(first_gen_dog_1))
+# print(np.size(first_gen_dog_1, 0))
+
+# slice_horizontally(first_gen_dog_1)
+# slice_horizontally(first_gen_dog_2)
+
+pyplot.imshow(first_gen_dog_1[0:50])
+# pyplot.show()

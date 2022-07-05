@@ -5,7 +5,7 @@ import numpy as np
 # url = "https://cdn2.poz.com/71174_RHSP-19-004.jpg_01b83f5c-df2d-41af-90e8-12f8af59feb8.jpeg"
 # res_status = requests.get(url, stream=True).status_code
 
-# TODO: Create custom numpy.ndarray type for func
+
 def show_and_close_img(img):
     pyplot.imshow(img)
     pyplot.show(block=False)
@@ -15,37 +15,54 @@ def show_and_close_img(img):
 
 def use_local_img():
     img = pyplot.imread("domestic_k9/Doggo.jpeg")
-    show_and_close_img(img)
+    return img
 
 
 def use_web_img():
     img_data_from_url = requests.get(url, stream=True).raw
     img = pyplot.imread(img_data_from_url, format="jpeg")
-    show_and_close_img(img)
+    return img
 
-    # if res_status == requests.codes.ok:
-    #     use_web_img()
-    # else:
-    #     use_local_img()
+
+def get_dog():
+    img = ""
+    if res_status == requests.codes.ok:
+        img = use_web_img()
+    else:
+        img = use_local_img()
+    return img
 
 
 img = pyplot.imread("domestic_k9/Doggo.jpeg")
 
-print(np.size(img, 1))
 
-
-def slice():
-    step = 0
-    slice_of_dog = np.empty_like(img)
+def slice_vertically(img):
     slice_width = 9
-    while step < np.size(img, 1):
-        slice_of_dog[:, step : step + slice_width] = img[:, step : step + slice_width]
-        step += slice_width * 2
+    index = 0
+    step_1 = 0
+    step_2 = slice_width
+    dog_1 = np.empty_like(img)
+    dog_2 = np.empty_like(img)
 
-    return slice_of_dog
+    while step_1 < np.size(img, 1):
+        slice_of_dog_1 = img[:, step_1 : step_1 + slice_width]
+        slice_of_dog_2 = img[:, step_2 : step_2 + slice_width]
+        dog_1[:, index : index + slice_width] = slice_of_dog_1
+        dog_2[:, index : index + slice_width] = slice_of_dog_2
+
+        index += slice_width
+        step_1 += slice_width * 2
+        step_2 += slice_width * 2
+
+    clean_dog_1, dirt = np.split(dog_1, 2, axis=1)
+    clean_dog_2, dirt = np.split(dog_2, 2, axis=1)
+
+    pyplot.imsave("sliced_dogs/first_gen/dog_1.jpeg", clean_dog_1)
+    pyplot.imsave("sliced_dogs/first_gen/dog_2.jpeg", clean_dog_2)
 
 
-a = slice()
+def slice_horizontally():
+    print("Ruy")
 
-pyplot.imshow(a)
-pyplot.show()
+
+slice_vertically(img)

@@ -14,12 +14,13 @@ def show_and_close_img(img):
 
 
 def use_local_img():
-    img = pyplot.imread("domestic_k9/Doggo.jpeg")
+    img = pyplot.imread("domestic_k9/local_doggo.jpeg")
     return img
 
 
 def use_web_img():
     img_data_from_url = requests.get(url, stream=True).raw
+    pyplot.imsave("stray_k9/web_doggo.jpeg", img_data_from_url)
     img = pyplot.imread(img_data_from_url, format="jpeg")
     return img
 

@@ -1,6 +1,7 @@
 import requests
 from matplotlib import pyplot as plt
 import numpy as np
+from time import sleep
 
 
 url = "https://cdn2.poz.com/71174_RHSP-19-004.jpg_01b83f5c-df2d-41af-90e8-12f8af59feb8.jpeg"
@@ -99,6 +100,13 @@ def slice_horizontally(img, batch):
     plt.imsave(f"sliced_dogs/gen_2/dog_{dog_num + 1}.jpeg", clean_dog_2)
 
 
+def position_dog_in_fig(fig, rows, columns, dog, position, title):
+    fig.add_subplot(rows, columns, position)
+    plt.imshow(dog)
+    plt.axis("off")
+    plt.title(title)
+
+
 def show_result_grotesque_experiment():
     use_local_doggo = False
     elder_dog = ""
@@ -122,54 +130,65 @@ def show_result_grotesque_experiment():
 
     rows = 3
     columns = 4
-
     fig = plt.figure(figsize=(10, 7))
 
-    fig.add_subplot(rows, columns, 1)
-
-    plt.imshow(elder_dog)
-    plt.axis("off")
-    plt.title("Elder gen 0")
-
-    fig.add_subplot(rows, columns, 5)
-
-    plt.imshow(first_gen_dog_1)
-    plt.axis("off")
-    plt.title("Senior 1 gen 1")
-
-    fig.add_subplot(rows, columns, 6)
-
-    plt.imshow(first_gen_dog_2)
-    plt.axis("off")
-    plt.title("Senior 2 gen 1")
-
-    fig.add_subplot(rows, columns, 9)
-
-    plt.imshow(second_gen_dog_1)
-    plt.axis("off")
-    plt.title("Junior 1 gen 2")
-
-    fig.add_subplot(rows, columns, 10)
-
-    plt.imshow(second_gen_dog_2)
-    plt.axis("off")
-    plt.title("Junior 2 gen 2")
-
-    fig.add_subplot(rows, columns, 11)
-
-    plt.imshow(second_gen_dog_3)
-    plt.axis("off")
-    plt.title("Junior 3 gen 2")
-
-    fig.add_subplot(rows, columns, 12)
-
-    plt.imshow(second_gen_dog_4)
-    plt.axis("off")
-    plt.title("Junior 4 gen 2")
+    position_dog_in_fig(fig, rows, columns, elder_dog, 1, "Elder gen 0")
+    position_dog_in_fig(fig, rows, columns, first_gen_dog_1, 5, "Senior 1 gen 1")
+    position_dog_in_fig(fig, rows, columns, first_gen_dog_2, 6, "Senior 2 gen 1")
+    position_dog_in_fig(fig, rows, columns, second_gen_dog_1, 9, "Junior 1 gen 2")
+    position_dog_in_fig(fig, rows, columns, second_gen_dog_2, 10, "Junior 2 gen 2")
+    position_dog_in_fig(fig, rows, columns, second_gen_dog_3, 11, "Junior 3 gen 2")
+    position_dog_in_fig(fig, rows, columns, second_gen_dog_4, 12, "Junior 4 gen 2")
 
     plt.show(block=False)
     plt.pause(7)
     plt.close()
+
+
+print(
+    '''
+              .__....._             _.....__,
+                 .": o :':         ;': o :".
+                 `. `-' .'.       .'. `-' .'  
+                   `---'             `---' 
+
+         _...----...      ...   ...      ...----..._
+      .-'__..-""'----    `.  `"`  .'    ----'""-..__`-.
+     '.-'   _.--"""'       `-._.-'       '"""--._   `-.`
+     '  .-"'                  :                  `"-.  `
+       '   `.              _.'"'._              .'   `
+             `.       ,.-'"       "'-.,       .'
+               `.                           .'
+                 `-._                   _.-'
+                     `"'--...___...--'"`
+'''
+)
+
+print("")
+sleep(4)
+
+print("Miau...\n")
+sleep(1)
+
+print("I mean wuf!\n")
+sleep(2)
+
+print("Wuf, welcome to my lab-radory.\n")
+sleep(3)
+
+print("Gonna do an epic experiment to prove that the multiverse is real.\n")
+sleep(3)
+
+print("Glad you came all this way to Shenwufzhen.\n")
+sleep(3)
+
+print("Those small minds in Europe don't know what real science is!\n")
+sleep(3)
+
+print("Ready to slice some dogs?\n\n\n")
+sleep(2)
+
+input("***(doesn't matter what you input as long as you press enter at the end)***")
 
 
 original_dog = get_dog()

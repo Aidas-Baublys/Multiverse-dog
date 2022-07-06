@@ -53,7 +53,7 @@ bash <(curl -s https://raw.githubusercontent.com/Aidas-Baublys/Multiverse-dog/ma
 5. Run project:
 
    ```bash
-   py -m pipenv run python main.py
+   py main.py
    ```
 
 6. Enjoy.

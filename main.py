@@ -1,41 +1,38 @@
 import requests
-import matplotlib.pyplot as pyplot
+from matplotlib import pyplot as plt
 import numpy as np
 
+
 url = "https://cdn2.poz.com/71174_RHSP-19-004.jpg_01b83f5c-df2d-41af-90e8-12f8af59feb8.jpeg"
-res_status = requests.get(url, stream=True).status_code
 
 
-def show_and_close_img(img):
-    pyplot.imshow(img)
-    pyplot.show(block=False)
-    pyplot.pause(3)
-    pyplot.close()
+def check_web_connection():
+    res_status = ""
+    try:
+        res_status = requests.get(url, stream=True).status_code
+    except requests.exceptions.ConnectionError:
+        print("Grrr, no internet, gonna use local dog.")
+    return res_status
 
 
 def use_local_img():
-    img = pyplot.imread("domestic_k9/local_doggo.jpeg")
-    return img
+    return plt.imread("domestic_k9/local_doggo.jpeg")
 
 
 def use_web_img():
     img_data_from_url = requests.get(url, stream=True).raw
-    pyplot.imsave("stray_k9/web_doggo.jpeg", img_data_from_url)
-    img = pyplot.imread(img_data_from_url, format="jpeg")
+    img = plt.imread(img_data_from_url, format="jpeg")
+    plt.imsave("stray_k9/web_doggo.jpeg", img)
     return img
 
 
 def get_dog():
     img = ""
-    if res_status == requests.codes.ok:
+    if check_web_connection() == requests.codes.ok:
         img = use_web_img()
     else:
         img = use_local_img()
     return img
-
-
-# original_dog = pyplot.imread("domestic_k9/Doggo.jpeg")
-original_dog = get_dog()
 
 
 def slice_vertically(img):
@@ -65,8 +62,8 @@ def slice_vertically(img):
     clean_dog_1, dirt = np.split(dog_1, 2, axis=1)
     clean_dog_2, dirt = np.split(dog_2, 2, axis=1)
 
-    pyplot.imsave("sliced_dogs/gen_1/dog_1.jpeg", clean_dog_1)
-    pyplot.imsave("sliced_dogs/gen_1/dog_2.jpeg", clean_dog_2)
+    plt.imsave("sliced_dogs/gen_1/dog_1.jpeg", clean_dog_1)
+    plt.imsave("sliced_dogs/gen_1/dog_2.jpeg", clean_dog_2)
 
 
 # ! Same logic, different axis. Batch added to avoid overwriting puppies.
@@ -98,14 +95,91 @@ def slice_horizontally(img, batch):
     else:
         dog_num = batch + 1
 
-    pyplot.imsave(f"sliced_dogs/gen_2/dog_{dog_num}.jpeg", clean_dog_1)
-    pyplot.imsave(f"sliced_dogs/gen_2/dog_{dog_num + 1}.jpeg", clean_dog_2)
+    plt.imsave(f"sliced_dogs/gen_2/dog_{dog_num}.jpeg", clean_dog_1)
+    plt.imsave(f"sliced_dogs/gen_2/dog_{dog_num + 1}.jpeg", clean_dog_2)
 
+
+def show_result_grotesque_experiment():
+    use_local_doggo = False
+    elder_dog = ""
+
+    try:
+        elder_dog = plt.imread("stray_k9/web_doggo.jpeg")
+    except FileNotFoundError:
+        use_local_doggo = True
+        print("Wuf, no web doggo, will use local.")
+
+    if use_local_doggo:
+        elder_dog = plt.imread("domestic_k9/local_doggo.jpeg")
+
+    first_gen_dog_1 = plt.imread("sliced_dogs/gen_1/dog_1.jpeg")
+    first_gen_dog_2 = plt.imread("sliced_dogs/gen_1/dog_2.jpeg")
+
+    second_gen_dog_1 = plt.imread("sliced_dogs/gen_2/dog_1.jpeg")
+    second_gen_dog_2 = plt.imread("sliced_dogs/gen_2/dog_2.jpeg")
+    second_gen_dog_3 = plt.imread("sliced_dogs/gen_2/dog_3.jpeg")
+    second_gen_dog_4 = plt.imread("sliced_dogs/gen_2/dog_4.jpeg")
+
+    rows = 3
+    columns = 4
+
+    fig = plt.figure(figsize=(10, 7))
+
+    fig.add_subplot(rows, columns, 1)
+
+    plt.imshow(elder_dog)
+    plt.axis("off")
+    plt.title("Elder gen 0")
+
+    fig.add_subplot(rows, columns, 5)
+
+    plt.imshow(first_gen_dog_1)
+    plt.axis("off")
+    plt.title("Senior 1 gen 1")
+
+    fig.add_subplot(rows, columns, 6)
+
+    plt.imshow(first_gen_dog_2)
+    plt.axis("off")
+    plt.title("Senior 2 gen 1")
+
+    fig.add_subplot(rows, columns, 9)
+
+    plt.imshow(second_gen_dog_1)
+    plt.axis("off")
+    plt.title("Junior 1 gen 2")
+
+    fig.add_subplot(rows, columns, 10)
+
+    plt.imshow(second_gen_dog_2)
+    plt.axis("off")
+    plt.title("Junior 2 gen 2")
+
+    fig.add_subplot(rows, columns, 11)
+
+    plt.imshow(second_gen_dog_3)
+    plt.axis("off")
+    plt.title("Junior 3 gen 2")
+
+    fig.add_subplot(rows, columns, 12)
+
+    plt.imshow(second_gen_dog_4)
+    plt.axis("off")
+    plt.title("Junior 4 gen 2")
+
+    plt.show(block=False)
+    plt.pause(7)
+    plt.close()
+
+
+original_dog = get_dog()
 
 slice_vertically(original_dog)
 
-first_gen_dog_1 = pyplot.imread("sliced_dogs/gen_1/dog_1.jpeg")
-first_gen_dog_2 = pyplot.imread("sliced_dogs/gen_1/dog_2.jpeg")
+first_gen_dog_1 = plt.imread("sliced_dogs/gen_1/dog_1.jpeg")
+first_gen_dog_2 = plt.imread("sliced_dogs/gen_1/dog_2.jpeg")
 
 slice_horizontally(first_gen_dog_1, 1)
 slice_horizontally(first_gen_dog_2, 2)
+
+show_result_grotesque_experiment()

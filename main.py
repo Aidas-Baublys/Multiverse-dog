@@ -33,27 +33,34 @@ def get_dog():
     return img
 
 
-original_dog = pyplot.imread("domestic_k9/Doggo.jpeg")
+# original_dog = pyplot.imread("domestic_k9/Doggo.jpeg")
+original_dog = get_dog()
 
 
 def slice_vertically(img):
-    slice_width = 9
+    slice_width = 9  # ! Hard coded to evenly divide img and avoid broadcasting errors.
     index = 0
     step_1 = 0
-    step_2 = slice_width
+    step_2 = slice_width  # ! We need every second slice, so to catch the slices that where stepped over, we start from end of first slice.
     dog_1 = np.empty_like(img)
     dog_2 = np.empty_like(img)
 
     while step_1 < np.size(img, 1):
+        # ! 1) Slice img;
         slice_of_dog_1 = img[:, step_1 : step_1 + slice_width]
         slice_of_dog_2 = img[:, step_2 : step_2 + slice_width]
+        # ! 2) Replace empty (0) values in empty array with slice;
         dog_1[:, index : index + slice_width] = slice_of_dog_1
         dog_2[:, index : index + slice_width] = slice_of_dog_2
 
+        # ! 3) Step once to next index in empty array to put slices next to each other;
         index += slice_width
+        # ! 4) Double step in img, repeat till end of img horizontal axis.
         step_1 += slice_width * 2
         step_2 += slice_width * 2
 
+    # ! Dirt is the empty (black) part left after slicing that we need to drop.
+    # ! More less equal to half of original img.
     clean_dog_1, dirt = np.split(dog_1, 2, axis=1)
     clean_dog_2, dirt = np.split(dog_2, 2, axis=1)
 
@@ -61,6 +68,7 @@ def slice_vertically(img):
     pyplot.imsave("sliced_dogs/gen_1/dog_2.jpeg", clean_dog_2)
 
 
+# ! Same logic, different axis. Batch added to avoid overwriting puppies.
 def slice_horizontally(img, batch):
     slice_width = 2
     index = 0

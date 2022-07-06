@@ -1,3 +1,4 @@
+from pathlib import Path
 import requests
 from matplotlib import pyplot as plt
 import numpy as np
@@ -5,6 +6,8 @@ from time import sleep
 
 
 url = "https://cdn2.poz.com/71174_RHSP-19-004.jpg_01b83f5c-df2d-41af-90e8-12f8af59feb8.jpeg"
+
+working_dir = Path(__file__).absolute().parent
 
 
 def check_web_connection():
@@ -17,13 +20,13 @@ def check_web_connection():
 
 
 def use_local_img():
-    return plt.imread("domestic_k9/local_doggo.jpeg")
+    return plt.imread(f"{working_dir}/domestic_k9/local_doggo.jpeg")
 
 
 def use_web_img():
     img_data_from_url = requests.get(url, stream=True).raw
     img = plt.imread(img_data_from_url, format="jpeg")
-    plt.imsave("stray_k9/web_doggo.jpeg", img)
+    plt.imsave(f"{working_dir}/stray_k9/web_doggo.jpeg", img)
     return img
 
 
@@ -63,8 +66,8 @@ def slice_vertically(img):
     clean_dog_1, dirt = np.split(dog_1, 2, axis=1)
     clean_dog_2, dirt = np.split(dog_2, 2, axis=1)
 
-    plt.imsave("sliced_dogs/gen_1/dog_1.jpeg", clean_dog_1)
-    plt.imsave("sliced_dogs/gen_1/dog_2.jpeg", clean_dog_2)
+    plt.imsave(f"{working_dir}/sliced_dogs/gen_1/dog_1.jpeg", clean_dog_1)
+    plt.imsave(f"{working_dir}/sliced_dogs/gen_1/dog_2.jpeg", clean_dog_2)
 
 
 # ! Same logic, different axis. Batch added to avoid overwriting puppies.
@@ -96,8 +99,8 @@ def slice_horizontally(img, batch):
     else:
         dog_num = batch + 1
 
-    plt.imsave(f"sliced_dogs/gen_2/dog_{dog_num}.jpeg", clean_dog_1)
-    plt.imsave(f"sliced_dogs/gen_2/dog_{dog_num + 1}.jpeg", clean_dog_2)
+    plt.imsave(f"{working_dir}/sliced_dogs/gen_2/dog_{dog_num}.jpeg", clean_dog_1)
+    plt.imsave(f"{working_dir}/sliced_dogs/gen_2/dog_{dog_num + 1}.jpeg", clean_dog_2)
 
 
 def position_dog_in_fig(fig, rows, columns, dog, position, title):
@@ -112,21 +115,21 @@ def show_result_grotesque_experiment():
     elder_dog = ""
 
     try:
-        elder_dog = plt.imread("stray_k9/web_doggo.jpeg")
+        elder_dog = plt.imread(f"{working_dir}/stray_k9/web_doggo.jpeg")
     except FileNotFoundError:
         use_local_doggo = True
         print("Wuf, no web doggo, will use local.")
 
     if use_local_doggo:
-        elder_dog = plt.imread("domestic_k9/local_doggo.jpeg")
+        elder_dog = plt.imread(f"{working_dir}/domestic_k9/local_doggo.jpeg")
 
-    first_gen_dog_1 = plt.imread("sliced_dogs/gen_1/dog_1.jpeg")
-    first_gen_dog_2 = plt.imread("sliced_dogs/gen_1/dog_2.jpeg")
+    first_gen_dog_1 = plt.imread(f"{working_dir}/sliced_dogs/gen_1/dog_1.jpeg")
+    first_gen_dog_2 = plt.imread(f"{working_dir}/sliced_dogs/gen_1/dog_2.jpeg")
 
-    second_gen_dog_1 = plt.imread("sliced_dogs/gen_2/dog_1.jpeg")
-    second_gen_dog_2 = plt.imread("sliced_dogs/gen_2/dog_2.jpeg")
-    second_gen_dog_3 = plt.imread("sliced_dogs/gen_2/dog_3.jpeg")
-    second_gen_dog_4 = plt.imread("sliced_dogs/gen_2/dog_4.jpeg")
+    second_gen_dog_1 = plt.imread(f"{working_dir}/sliced_dogs/gen_2/dog_1.jpeg")
+    second_gen_dog_2 = plt.imread(f"{working_dir}/sliced_dogs/gen_2/dog_2.jpeg")
+    second_gen_dog_3 = plt.imread(f"{working_dir}/sliced_dogs/gen_2/dog_3.jpeg")
+    second_gen_dog_4 = plt.imread(f"{working_dir}/sliced_dogs/gen_2/dog_4.jpeg")
 
     rows = 3
     columns = 4
@@ -145,58 +148,61 @@ def show_result_grotesque_experiment():
     plt.close()
 
 
-print(
+def greeting():
+    print(
+        '''
+                .__....._             _.....__,
+                    .": o :':         ;': o :".
+                    `. `-' .'.       .'. `-' .'
+                    `---'             `---'
+
+            _...----...      ...   ...      ...----..._
+        .-'__..-""'----    `.  `"`  .'    ----'""-..__`-.
+        '.-'   _.--"""'       `-._.-'       '"""--._   `-.`
+        '  .-"'                  :                  `"-.  `
+        '   `.              _.'"'._              .'   `
+                `.       ,.-'"       "'-.,       .'
+                `.                           .'
+                    `-._                   _.-'
+                        `"'--...___...--'"`
     '''
-              .__....._             _.....__,
-                 .": o :':         ;': o :".
-                 `. `-' .'.       .'. `-' .'  
-                   `---'             `---' 
+    )
 
-         _...----...      ...   ...      ...----..._
-      .-'__..-""'----    `.  `"`  .'    ----'""-..__`-.
-     '.-'   _.--"""'       `-._.-'       '"""--._   `-.`
-     '  .-"'                  :                  `"-.  `
-       '   `.              _.'"'._              .'   `
-             `.       ,.-'"       "'-.,       .'
-               `.                           .'
-                 `-._                   _.-'
-                     `"'--...___...--'"`
-'''
-)
+    print("")
+    sleep(4)
 
-print("")
-sleep(4)
+    print("Miau...\n")
+    sleep(1)
 
-print("Miau...\n")
-sleep(1)
+    print("I mean wuf!\n")
+    sleep(2)
 
-print("I mean wuf!\n")
-sleep(2)
+    print("Wuf, welcome to my lab-radory.\n")
+    sleep(3)
 
-print("Wuf, welcome to my lab-radory.\n")
-sleep(3)
+    print("Gonna do an epic experiment to prove that the multiverse is real.\n")
+    sleep(3)
 
-print("Gonna do an epic experiment to prove that the multiverse is real.\n")
-sleep(3)
+    print("Glad you came all this way to Shenwufzhen.\n")
+    sleep(3)
 
-print("Glad you came all this way to Shenwufzhen.\n")
-sleep(3)
+    print("Those small minds in Europe don't know what real science is!\n")
+    sleep(3)
 
-print("Those small minds in Europe don't know what real science is!\n")
-sleep(3)
+    print("Ready to slice some dogs?\n\n\n")
+    sleep(2)
 
-print("Ready to slice some dogs?\n\n\n")
-sleep(2)
+    input("***(doesn't matter what you input as long as you press enter at the end)***")
 
-input("***(doesn't matter what you input as long as you press enter at the end)***")
 
+greeting()
 
 original_dog = get_dog()
 
 slice_vertically(original_dog)
 
-first_gen_dog_1 = plt.imread("sliced_dogs/gen_1/dog_1.jpeg")
-first_gen_dog_2 = plt.imread("sliced_dogs/gen_1/dog_2.jpeg")
+first_gen_dog_1 = plt.imread(f"{working_dir}/sliced_dogs/gen_1/dog_1.jpeg")
+first_gen_dog_2 = plt.imread(f"{working_dir}/sliced_dogs/gen_1/dog_2.jpeg")
 
 slice_horizontally(first_gen_dog_1, 1)
 slice_horizontally(first_gen_dog_2, 2)

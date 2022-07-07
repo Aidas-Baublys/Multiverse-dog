@@ -47,7 +47,7 @@ bash <(curl -s https://raw.githubusercontent.com/Aidas-Baublys/Multiverse-dog/ma
 4. Install dependencies:
 
    ```bash
-   py -m pipenv install
+   py -m pipenv run python main.py
    ```
 
 5. Run project:
